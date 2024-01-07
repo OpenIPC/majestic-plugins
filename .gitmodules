@@ -1,0 +1,6 @@
+[submodule "submodule/capjpeg"]
+	path = submodule/capjpeg
+	url = https://github.com/openipc/capjpeg.git
+[submodule "submodule/glutinium"]
+	path = submodule/glutinium
+	url = https://github.com/zigfisher/glutinium.git
