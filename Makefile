@@ -1,2 +1,2 @@
-$(TARGET): clean
-	$(CC) -I include/$(TARGET) -shared $@.c -o $@.so -Os -s
+$(TARGET):
+	$(CC) -I $@/include $@/$@.c -o $@.so -Os -s -shared -fPIC
