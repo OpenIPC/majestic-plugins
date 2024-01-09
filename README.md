@@ -22,12 +22,19 @@ scp -O majestic-plugins/sigmastar.so root@192.168.1.10:/usr/lib
 
 ---
 
-Send command:
+Activate plugin support:
 ```
-curl -u root:12345 -s "http://192.168.1.10/plugin?command=1&value=100"
+ssh root@192.168.1.10
+cli -s .system.plugins true
+killall -1 majestic
 ```
 
-Get result:
+Send command to plugin:
+```
+curl -u root:12345 -s "http://192.168.1.10/plugin?command=brightness&value=100"
+```
+
+Query result from plugin:
 ```
 curl -u root:12345 -s "http://192.168.1.10/plugin?result"
 ```

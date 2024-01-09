@@ -1,19 +1,38 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <imp/imp_isp.h>
 
-static int set_brightness(int value) {
-	if (IMP_ISP_Tuning_SetBrightness(value)) {
-		printf("IMP_ISP_Tuning_SetBrightness failed");
-		return 1;
+#define getf(f) strstr(command, f)
+#define printp(f, ...) snprintf(result, sizeof(result), f, ##__VA_ARGS__)
+
+static char result[128];
+
+static void set_brightness(const char *value) {
+	if (strlen(value)) {
+		int digit = atoi(value);
+		if (IMP_ISP_Tuning_SetBrightness(digit)) {
+			printp("IMP_ISP_Tuning_SetBrightness failed");
+			return;
+		}
+
+		printp("Set brightness: %d", digit);
+	} else {
+		unsigned char current;
+		if (IMP_ISP_Tuning_GetBrightness(&current)) {
+			printp("IMP_ISP_Tuning_GetBrightness failed");
+			return;
+		}
+
+		printp("Get brightness: %d", current);
 	}
-
-	printf("Set brightness: %d", value);
-
-	return 0;
 }
 
-static int set_rotation(int value) {
-	switch (value) {
+static void set_rotation(const char *value) {
+	int digit = strlen(value) ? atoi(value) : -1;
+
+	switch (digit) {
 		case 0:
 			IMP_ISP_Tuning_SetISPVflip(0);
 			IMP_ISP_Tuning_SetISPHflip(0);
@@ -35,25 +54,20 @@ static int set_rotation(int value) {
 			break;
 
 		default:
-			return 1;
+			printp("Unknown rotation: %d", digit);
+			return;
 	}
 
-	printf("Set rotation: %d", value);
-
-	return 0;
+	printp("Set rotation: %d", digit);
 }
 
-int plugin_call(int command, int value) {
-	int result = 0;
-
-	switch (command) {
-		case 10:
-			result = set_brightness(value);
-			break;
-
-		case 50:
-			result = set_rotation(value);
-			break;
+char *plugin_call(const char *command, const char *value) {
+	if (getf("brightness")) {
+		set_brightness(value);
+	} else if (getf("rotation")) {
+		set_rotation(value);
+	} else {
+		printp("Command: %s, Value: %s", command, value);
 	}
 
 	return result;
