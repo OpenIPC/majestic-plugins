@@ -1,2 +1,4 @@
+SOURCE := $(shell find $(TARGET) -name *.c)
+
 $(TARGET):
-	$(CC) -I $@/include $@/$@.c -o $@.so -Os -s -shared -fPIC
+	$(CC) $(SOURCE) -I $@ -I $@/include -o $@.so -Os -s -shared -fPIC

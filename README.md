@@ -29,14 +29,10 @@ cli -s .system.plugins true
 killall -1 majestic
 ```
 
-Send command to plugin:
+Send command to plugin (local/remote):
 ```
+echo brightness 100 | nc localhost 4000
 curl -u root:12345 -s "http://192.168.1.10/plugin?command=brightness&value=100"
-```
-
-Query result from plugin:
-```
-curl -u root:12345 -s "http://192.168.1.10/plugin?result"
 ```
 
 [logo]: https://openipc.org/assets/openipc-logo-black.svg
