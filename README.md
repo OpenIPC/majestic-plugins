@@ -10,14 +10,26 @@ Build usage:
 git clone https://github.com/OpenIPC/firmware
 cd firmware
 git clone https://github.com/OpenIPC/majestic-plugins
-
-export BOARD=ssc335_lite
-make br-majestic-plugins-rebuild
 ```
 
-Upload library:
+Hisilicon:
 ```
-scp -O majestic-plugins/sigmastar.so root@192.168.1.10:/usr/lib
+make br-majestic-plugins-rebuild BOARD=hi3516ev300_lite
+```
+
+Ingenic:
+```
+make br-majestic-plugins-rebuild BOARD=t31_lite
+```
+
+Sigmastar:
+```
+make br-majestic-plugins-rebuild BOARD=ssc335_lite
+```
+
+Upload file:
+```
+scp -O majestic-plugins/*.so root@192.168.1.10:/usr/lib
 ```
 
 ---
@@ -29,9 +41,13 @@ cli -s .system.plugins true
 killall -1 majestic
 ```
 
-Send command to plugin (local/remote):
+Send local command:
 ```
 echo brightness 100 | nc localhost 4000
+```
+
+Send remote command:
+```
 curl -u root:12345 -s "http://192.168.1.10/plugin?command=brightness&value=100"
 ```
 

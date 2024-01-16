@@ -1,4 +1,4 @@
-#include <command.h>
+#include <plugin.h>
 
 void get_cpu() {
 	const char* info = IMP_System_GetCPUInfo();

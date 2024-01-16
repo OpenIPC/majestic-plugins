@@ -1,4 +1,4 @@
-#include <command.h>
+#include <plugin.h>
 
 void set_brightness(const char *value) {
 	MI_ISP_IQ_BRIGHTNESS_TYPE_t brightness;

@@ -1,4 +1,4 @@
-#include <command.h>
+#include <plugin.h>
 
 #define USAGE "Usage:"
 

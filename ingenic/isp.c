@@ -1,4 +1,4 @@
-#include <command.h>
+#include <plugin.h>
 
 void set_again(const char *value) {
 	if (strlen(value)) {
