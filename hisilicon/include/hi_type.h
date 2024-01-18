@@ -1,9 +1,6 @@
-/******************************************************************************
- * Copyright (C) Hisilicon Technologies Co., Ltd. 2005-2019. All rights reserved.
- * Description: Common data types of the system.
- * Author: Hisilicon multimedia software group
- * Create: 2005-4-23
-******************************************************************************/
+/*
+ * 
+ */
 
 #ifndef __HI_TYPE_H__
 #define __HI_TYPE_H__
@@ -15,6 +12,8 @@
 
 #include <stdint.h>
 #endif
+
+#include "type.h"
 
 #ifdef __cplusplus
 #if __cplusplus
@@ -62,10 +61,14 @@ typedef unsigned int            HI_HANDLE;
 /*----------------------------------------------*
  * const defination                             *
  *----------------------------------------------*/
-typedef enum {
-    HI_FALSE = 0,
-    HI_TRUE  = 1,
-} HI_BOOL;
+//typedef enum {
+//   HI_FALSE = 0,
+//#    HI_TRUE  = 1,
+//} HI_BOOL;
+#define HI_FALSE GK_FALSE
+#define HI_TRUE GK_TRUE  
+
+typedef GK_BOOL  HI_BOOL;
 
 #ifndef NULL
     #define NULL                0L

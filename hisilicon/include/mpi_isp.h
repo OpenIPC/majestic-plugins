@@ -1,22 +1,9 @@
-/******************************************************************************
+/*
+ * 
+ */
 
-  Copyright (C), 2016, Hisilicon Tech. Co., Ltd.
-
- ******************************************************************************
-  File Name     : mpi_isp.h
-  Version       : Initial Draft
-  Author        : Hisilicon multimedia software group
-  Created       : 2010/12/20
-  Description   :
-  History       :
-  1.Date        : 2010/12/20
-    Author      :
-    Modification: Created file
-
-******************************************************************************/
-
-#ifndef __MPI_ISP_H__
-#define __MPI_ISP_H__
+#ifndef __HI_MPI_ISP_H__
+#define __HI_MPI_ISP_H__
 
 #include "hi_comm_isp.h"
 #include "hi_comm_sns.h"
@@ -218,4 +205,4 @@ HI_S32 HI_MPI_ISP_GetSmartInfo(VI_PIPE ViPipe, ISP_SMART_INFO_S *pstSmartInfo);
 #endif
 #endif /* End of #ifdef __cplusplus */
 
-#endif /* __MPI_ISP_H__ */
+#endif /* __HI_MPI_ISP_H__ */

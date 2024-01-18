@@ -64,7 +64,6 @@ typedef struct {
 	uint32_t virAddr;	/**< frame's virtual address */
 
 	int64_t timeStamp;	/**<  frame time stamp*/
-	int rotate_osdflag;
 	uint32_t priv[0];	/* private data */
 } IMPFrameInfo;
 

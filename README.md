@@ -5,25 +5,25 @@
 
 ---
 
-Build usage:
+Prepare source:
 ```
 git clone https://github.com/OpenIPC/firmware
 cd firmware
 git clone https://github.com/OpenIPC/majestic-plugins
 ```
 
-Hisilicon:
+Build usage:
 ```
+- Hisilicon:
 make br-majestic-plugins-rebuild BOARD=hi3516ev300_lite
-```
 
-Ingenic:
-```
+- Goke:
+make br-majestic-plugins-rebuild BOARD=gk7202v300_lite
+
+- Ingenic:
 make br-majestic-plugins-rebuild BOARD=t31_lite
-```
 
-Sigmastar:
-```
+- Sigmastar:
 make br-majestic-plugins-rebuild BOARD=ssc335_lite
 ```
 
