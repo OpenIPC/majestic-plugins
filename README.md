@@ -7,9 +7,8 @@
 
 ### Prepare source:
 ```
-git clone https://github.com/OpenIPC/firmware
+git clone https://github.com/OpenIPC/firmware --depth 1
 cd firmware
-git clone https://github.com/OpenIPC/majestic-plugins
 ```
 
 ### Build usage:
@@ -29,7 +28,7 @@ make br-majestic-plugins-rebuild BOARD=ssc335_lite
 
 ### Upload file:
 ```
-scp -O majestic-plugins/*.so root@192.168.1.10:/usr/lib
+scp -O output/build/majestic-plugins-master/*.so root@192.168.1.10:/usr/lib
 ```
 
 ---

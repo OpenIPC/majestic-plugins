@@ -1,6 +1,10 @@
 #include <plugin.h>
+#include <mpi_isp.h>
+#include <mpi_sys.h>
 
-void set_brightness(const char *value) {
+static char result[256];
+
+static void set_brightness(const char *value) {
 	ISP_CSC_ATTR_S attr;
 	if (HI_MPI_ISP_GetCSCAttr(0, &attr)) {
 		PRINTP("HI_MPI_ISP_GetCSCAttr failed");
@@ -23,7 +27,7 @@ void set_brightness(const char *value) {
 	PRINTP("Set brightness: %d", index);
 }
 
-void set_contrast(const char *value) {
+static void set_contrast(const char *value) {
 	ISP_CSC_ATTR_S attr;
 	if (HI_MPI_ISP_GetCSCAttr(0, &attr)) {
 		PRINTP("HI_MPI_ISP_GetCSCAttr failed");
@@ -44,4 +48,33 @@ void set_contrast(const char *value) {
 	}
 
 	PRINTP("Set contrast: %d", index);
+}
+
+static void get_version() {
+	MPP_VERSION_S version;
+	if (HI_MPI_SYS_GetVersion(&version)) {
+		PRINTP("MI_SYS_GetVersion failed");
+		return;
+	}
+
+	PRINTP("%s", version.aVersion);
+}
+
+static table custom[] = {
+	{ "brightness", &set_brightness },
+	{ "contrast", &set_contrast },
+	{ "version", &get_version },
+};
+
+char *call_custom(const char *command, const char *value) {
+	for (size_t i = 0; i < sizeof(custom) / sizeof(table); i++) {
+		if (strstr(command, custom[i].cmd)) {
+			custom[i].func(value);
+			return result;
+		}
+	}
+
+	PRINTP("Plugin: %s %s", command, value);
+
+	return result;
 }

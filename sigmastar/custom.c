@@ -1,6 +1,11 @@
+#include <mi_common.h>
+#include <mi_isp_iq.h>
+#include <mi_sys.h>
 #include <plugin.h>
 
-void set_brightness(const char *value) {
+static char result[256];
+
+static void set_brightness(const char *value) {
 	MI_ISP_IQ_BRIGHTNESS_TYPE_t brightness;
 	if (MI_ISP_IQ_GetBrightness(0, &brightness)) {
 		PRINTP("MI_ISP_IQ_GetBrightness failed");
@@ -25,7 +30,7 @@ void set_brightness(const char *value) {
 	PRINTP("Set brightness: %d", index);
 }
 
-void set_contrast(const char *value) {
+static void set_contrast(const char *value) {
 	MI_ISP_IQ_CONTRAST_TYPE_t contrast;
 	if (MI_ISP_IQ_GetContrast(0, &contrast)) {
 		PRINTP("MI_ISP_IQ_GetContrast failed");
@@ -48,4 +53,33 @@ void set_contrast(const char *value) {
 	}
 
 	PRINTP("Set contrast: %d", index);
+}
+
+static void get_version() {
+	MI_SYS_Version_t version;
+	if (MI_SYS_GetVersion(&version)) {
+		PRINTP("MI_SYS_GetVersion failed");
+		return;
+	}
+
+	PRINTP("%s", version.u8Version);
+}
+
+static table custom[] = {
+	{ "brightness", &set_brightness },
+	{ "contrast", &set_contrast },
+	{ "version", &get_version },
+};
+
+char *call_custom(const char *command, const char *value) {
+	for (size_t i = 0; i < sizeof(custom) / sizeof(table); i++) {
+		if (strstr(command, custom[i].cmd)) {
+			custom[i].func(value);
+			return result;
+		}
+	}
+
+	PRINTP("Plugin: %s %s", command, value);
+
+	return result;
 }
