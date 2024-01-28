@@ -3,6 +3,11 @@
 ## Majestic plugins for OpenIPC
 **_Experimental system for creating open source plugins for Majestic_**
 
+### Important information:
+- At the moment, examples of plugins have been implemented only for the most popular processors today.
+- Nothing prevents everyone and enthusiasts from adding them to other processors and actively developing them.
+- By default, the plugin system is disabled and does not contribute any actions to the main operation of the device.
+
 ---
 
 ### Prepare source:
