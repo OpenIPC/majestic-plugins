@@ -5,14 +5,14 @@
 
 ---
 
-Prepare source:
+### Prepare source:
 ```
 git clone https://github.com/OpenIPC/firmware
 cd firmware
 git clone https://github.com/OpenIPC/majestic-plugins
 ```
 
-Build usage:
+### Build usage:
 ```
 - Hisilicon:
 make br-majestic-plugins-rebuild BOARD=hi3516ev300_lite
@@ -27,26 +27,26 @@ make br-majestic-plugins-rebuild BOARD=t31_lite
 make br-majestic-plugins-rebuild BOARD=ssc335_lite
 ```
 
-Upload file:
+### Upload file:
 ```
 scp -O majestic-plugins/*.so root@192.168.1.10:/usr/lib
 ```
 
 ---
 
-Activate plugin support:
+### Activate plugin support:
 ```
 ssh root@192.168.1.10
 cli -s .system.plugins true
 killall -1 majestic
 ```
 
-Send local command:
+### Send local command:
 ```
 echo brightness 100 | nc localhost 3500
 ```
 
-Send remote command:
+### Send remote command:
 ```
 curl -u root:12345 -s "http://192.168.1.10/plugin?command=brightness&value=100"
 ```
