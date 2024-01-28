@@ -43,7 +43,7 @@ killall -1 majestic
 
 Send local command:
 ```
-echo brightness 100 | nc localhost 4000
+echo brightness 100 | nc localhost 3500
 ```
 
 Send remote command:
