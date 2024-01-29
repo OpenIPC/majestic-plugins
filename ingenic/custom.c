@@ -1,5 +1,4 @@
 #include <imp_isp.h>
-#include <imp_system.h>
 #include <su_base.h>
 #include <plugin.h>
 
@@ -77,21 +76,21 @@ static void set_rotation(const char *value) {
 	PRINTP("Set rotation: %d", index);
 }
 
-static void get_cpu() {
-	const char* info = IMP_System_GetCPUInfo();
-	if (!info) {
-		 PRINTP("IMP_System_GetCPUInfo failed");
-		 return;
+static void get_version() {
+	SUVersion version;
+	if (SU_Base_GetVersion(&version)) {
+		PRINTP("SU_Base_GetVersion failed");
+		return;
 	}
 
-	PRINTP("%s", info);
+	PRINTP("%s", version.chr);
 }
 
 static table custom[] = {
 	{ "again", &set_again },
 	{ "brightness", &set_brightness },
 	{ "rotation", &set_rotation },
-	{ "cpu", &get_cpu },
+	{ "version", &get_version },
 };
 
 char *call_custom(const char *command, const char *value) {
