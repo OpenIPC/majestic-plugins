@@ -3,11 +3,21 @@
 #include <string.h>
 #include <unistd.h>
 
-#define PRINTP(f, ...) snprintf(result, sizeof(result), f, ##__VA_ARGS__)
-
-char *call_custom(const char *command, const char *value);
+#define RETURN(f, ...) snprintf(common.buffer, sizeof(common.buffer), f, ##__VA_ARGS__); return
 
 typedef struct {
 	const char *cmd;
 	void (*func)(const char *);
 } table;
+
+typedef struct {
+	char buffer[512];
+	table *list;
+	int size;
+} config;
+
+extern config common;
+
+void call_motion(const char* value);
+void call_setup(const char* value);
+void get_usage();

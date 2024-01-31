@@ -2,25 +2,21 @@
 #include <su_base.h>
 #include <plugin.h>
 
-static char result[256];
-
 static void set_again(const char *value) {
 	if (strlen(value)) {
 		unsigned int index = atoi(value);
 		if (IMP_ISP_Tuning_SetMaxAgain(index)) {
-			PRINTP("IMP_ISP_Tuning_SetMaxAgain failed");
-			return;
+			RETURN("IMP_ISP_Tuning_SetMaxAgain failed");
 		}
 
-		PRINTP("Set again: %d", index);
+		RETURN("Set again: %d", index);
 	} else {
 		unsigned int current;
 		if (IMP_ISP_Tuning_GetMaxAgain(&current)) {
-			PRINTP("IMP_ISP_Tuning_GetMaxAgain failed");
-			return;
+			RETURN("IMP_ISP_Tuning_GetMaxAgain failed");
 		}
 
-		PRINTP("Get again: %d", current);
+		RETURN("Get again: %d", current);
 	}
 }
 
@@ -28,19 +24,17 @@ static void set_brightness(const char *value) {
 	if (strlen(value)) {
 		unsigned char index = atoi(value);
 		if (IMP_ISP_Tuning_SetBrightness(index)) {
-			PRINTP("IMP_ISP_Tuning_SetBrightness failed");
-			return;
+			RETURN("IMP_ISP_Tuning_SetBrightness failed");
 		}
 
-		PRINTP("Set brightness: %d", index);
+		RETURN("Set brightness: %d", index);
 	} else {
 		unsigned char current;
 		if (IMP_ISP_Tuning_GetBrightness(&current)) {
-			PRINTP("IMP_ISP_Tuning_GetBrightness failed");
-			return;
+			RETURN("IMP_ISP_Tuning_GetBrightness failed");
 		}
 
-		PRINTP("Get brightness: %d", current);
+		RETURN("Get brightness: %d", current);
 	}
 }
 
@@ -69,21 +63,19 @@ static void set_rotation(const char *value) {
 			break;
 
 		default:
-			PRINTP("Unknown rotation: %d", index);
-			return;
+			RETURN("Unknown rotation: %d", index);
 	}
 
-	PRINTP("Set rotation: %d", index);
+	RETURN("Set rotation: %d", index);
 }
 
 static void get_version() {
 	SUVersion version;
 	if (SU_Base_GetVersion(&version)) {
-		PRINTP("SU_Base_GetVersion failed");
-		return;
+		RETURN("SU_Base_GetVersion failed");
 	}
 
-	PRINTP("%s", version.chr);
+	RETURN("%s", version.chr);
 }
 
 static table custom[] = {
@@ -91,17 +83,12 @@ static table custom[] = {
 	{ "brightness", &set_brightness },
 	{ "rotation", &set_rotation },
 	{ "version", &get_version },
+	{ "motion", &call_motion },
+	{ "setup", &call_setup },
+	{ "help", &get_usage },
 };
 
-char *call_custom(const char *command, const char *value) {
-	for (size_t i = 0; i < sizeof(custom) / sizeof(table); i++) {
-		if (strstr(command, custom[i].cmd)) {
-			custom[i].func(value);
-			return result;
-		}
-	}
-
-	PRINTP("Plugin: %s %s", command, value);
-
-	return result;
-}
+config common = {
+	.list = custom,
+	.size = sizeof(custom) / sizeof(table),
+};

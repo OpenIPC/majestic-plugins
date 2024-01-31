@@ -1,38 +1,37 @@
 #include <plugin.h>
 
-static char result[128];
-
 static void set_script(const char* file, const char* value) {
-	char cmd[64];
 	if (!access(file, X_OK)) {
-		PRINTP("Execute script: %s", file);
-		sprintf(cmd, "%s %s", file, value);
-		system(cmd);
+		sprintf(common.buffer, "%s %s", file, value);
+		system(common.buffer);
+		RETURN("Execute script: %s", file);
 	} else {
-		PRINTP("Cannot access: %s", file);
+		RETURN("Cannot access: %s", file);
 	}
 }
 
-static void call_motion(const char* value) {
+void call_motion(const char* value) {
 	set_script("/usr/sbin/motion.sh", value);
 }
 
-static void call_setup(const char* value) {
+void call_setup(const char* value) {
 	set_script("/usr/sbin/setup.sh", value);
 }
 
-static table common[] = {
-	{ "motion", &call_motion },
-	{ "setup", &call_setup },
-};
+void get_usage() {
+	int sum = sprintf(common.buffer, "Usage:");
+	for (int i = 0; i < common.size; i++) {
+		sum += sprintf(common.buffer + sum, " %s", common.list[i].cmd);
+	}
+}
 
 char *plugin_call(const char *command, const char *value) {
-	for (size_t i = 0; i < sizeof(common) / sizeof(table); i++) {
-		if (strstr(command, common[i].cmd)) {
-			common[i].func(value);
-			return result;
+	for (int i = 0; i < common.size; i++) {
+		if (strstr(command, common.list[i].cmd)) {
+			common.list[i].func(value);
+			break;
 		}
 	}
 
-	return call_custom(command, value);
+	return common.buffer;
 }
