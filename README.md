@@ -10,6 +10,29 @@
 
 ---
 
+### Example function:
+- New functions can be added to `vendor/custom.c`
+- RETURN is a macro to simplify the plugin response output.
+```
+static void get_example(const char *value) {
+	RETURN("call to get_example: %s", value);
+}
+
+static table custom[] = {
+	[...]
+	{ "example", &get_example },
+};
+```
+
+### Example result:
+
+```
+root@openipc-ssc337de:~# echo example test123 | nc localhost 3500
+call to get_example: test123
+```
+
+---
+
 ### Prepare source:
 ```
 git clone https://github.com/OpenIPC/firmware --depth 1
