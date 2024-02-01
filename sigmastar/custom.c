@@ -1,5 +1,6 @@
 #include <mi_common.h>
-#include <mi_isp_iq.h>
+#include <mi_isp.h>
+#include <mi_sensor.h>
 #include <mi_sys.h>
 #include <plugin.h>
 
@@ -47,6 +48,51 @@ static void set_contrast(const char *value) {
 	RETURN("Set contrast: %d", index);
 }
 
+static void set_rotation(const char *value) {
+	int index = strlen(value) ? atoi(value) : -1;
+	bool mirror, flip;
+
+	switch (index) {
+		case 0:
+			mirror = false;
+			flip = false;
+			break;
+
+		case 1:
+			mirror = true;
+			flip = false;
+			break;
+
+		case 2:
+			mirror = false;
+			flip = true;
+			break;
+
+		case 3:
+			mirror = true;
+			flip = true;
+			break;
+
+		default:
+			RETURN("Unknown rotation: %d", index);
+	}
+
+	if (MI_SNR_SetOrien(0, mirror, flip)) {
+		RETURN("MI_SNR_SetOrien failed");
+	}
+
+	RETURN("Set rotation: %d", index);
+}
+
+static void get_isp_again() {
+	CusAEInfo_t info;
+	if (MI_ISP_CUS3A_GetAeStatus(0, &info)) {
+		RETURN("MI_ISP_CUS3A_GetAeStatus failed");
+	}
+
+	RETURN("%d", info.SensorGain);
+}
+
 static void get_version() {
 	MI_SYS_Version_t version;
 	if (MI_SYS_GetVersion(&version)) {
@@ -59,6 +105,8 @@ static void get_version() {
 static table custom[] = {
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
+	{ "rotation", &set_rotation },
+	{ "isp_again", &get_isp_again },
 	{ "version", &get_version },
 	{ "motion", &call_motion },
 	{ "setup", &call_setup },

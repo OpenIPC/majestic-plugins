@@ -1,6 +1,8 @@
-#include <plugin.h>
+#include <mpi_ae.h>
 #include <mpi_isp.h>
 #include <mpi_sys.h>
+#include <mpi_vpss.h>
+#include <plugin.h>
 
 static void set_brightness(const char *value) {
 	ISP_CSC_ATTR_S attr;
@@ -42,10 +44,59 @@ static void set_contrast(const char *value) {
 	RETURN("Set contrast: %d", index);
 }
 
+static void set_rotation(const char *value) {
+	int index = strlen(value) ? atoi(value) : -1;
+
+	VPSS_CHN_ATTR_S attr;
+	if (HI_MPI_VPSS_GetChnAttr(0, 1, &attr)) {
+		RETURN("HI_MPI_VPSS_GetChnAttr failed");
+	}
+
+	switch (index) {
+		case 0:
+			attr.bMirror = false;
+			attr.bFlip = false;
+			break;
+
+		case 1:
+			attr.bMirror = true;
+			attr.bFlip = false;
+			break;
+
+		case 2:
+			attr.bMirror = false;
+			attr.bFlip = true;
+			break;
+
+		case 3:
+			attr.bMirror = true;
+			attr.bFlip = true;
+			break;
+
+		default:
+			RETURN("Unknown rotation: %d", index);
+	}
+
+	if (HI_MPI_VPSS_SetChnAttr(0, 1, &attr)) {
+		RETURN("HI_MPI_VPSS_SetChnAttr failed");
+	}
+
+	RETURN("Set rotation: %d", index);
+}
+
+static void get_isp_again() {
+	ISP_EXP_INFO_S info;
+	if (HI_MPI_ISP_QueryExposureInfo(0, &info)) {
+		RETURN("HI_MPI_ISP_QueryExposureInfo failed");
+	}
+
+	RETURN("%d", info.u32AGain);
+}
+
 static void get_version() {
 	MPP_VERSION_S version;
 	if (HI_MPI_SYS_GetVersion(&version)) {
-		RETURN("MI_SYS_GetVersion failed");
+		RETURN("HI_MPI_SYS_GetVersion failed");
 	}
 
 	RETURN("%s", version.aVersion);
@@ -54,6 +105,8 @@ static void get_version() {
 static table custom[] = {
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
+	{ "rotation", &set_rotation },
+	{ "isp_again", &get_isp_again },
 	{ "version", &get_version },
 	{ "motion", &call_motion },
 	{ "setup", &call_setup },

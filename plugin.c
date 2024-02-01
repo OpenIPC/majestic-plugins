@@ -21,7 +21,8 @@ void call_setup(const char* value) {
 void get_usage() {
 	int sum = sprintf(common.buffer, "Usage:");
 	for (int i = 0; i < common.size; i++) {
-		sum += sprintf(common.buffer + sum, " %s", common.list[i].cmd);
+		sum += snprintf(common.buffer + sum,
+			sizeof(common.buffer) - sum, " %s", common.list[i].cmd);
 	}
 }
 
