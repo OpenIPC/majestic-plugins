@@ -2,6 +2,15 @@
 #include <su_base.h>
 #include <plugin.h>
 
+static void set_blackwhite(const char *value) {
+	bool index = strlen(value) ? atoi(value) : false;
+	if (IMP_ISP_Tuning_SetISPRunningMode(index)) {
+		RETURN("IMP_ISP_Tuning_SetISPRunningMode failed");
+	}
+
+	RETURN("Set blackwhite: %d", index);
+}
+
 static void set_brightness(const char *value) {
 	if (strlen(value)) {
 		unsigned char index = atoi(value);
@@ -88,6 +97,7 @@ static void get_version() {
 }
 
 static table custom[] = {
+	{ "blackwhite", &set_blackwhite },
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
 	{ "rotation", &set_rotation },

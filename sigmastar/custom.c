@@ -4,6 +4,19 @@
 #include <mi_sys.h>
 #include <plugin.h>
 
+static void set_blackwhite(const char *value) {
+	bool index = strlen(value) ? atoi(value) : false;
+
+	MI_ISP_IQ_COLORTOGRAY_TYPE_t color;
+	color.bEnable = index;
+
+	if (MI_ISP_IQ_SetColorToGray(0, &color)) {
+		RETURN("MI_ISP_IQ_SetColorToGray failed");
+	}
+
+	RETURN("Set blackwhite: %d", index);
+}
+
 static void set_brightness(const char *value) {
 	MI_ISP_IQ_BRIGHTNESS_TYPE_t brightness;
 	if (MI_ISP_IQ_GetBrightness(0, &brightness)) {
@@ -103,6 +116,7 @@ static void get_version() {
 }
 
 static table custom[] = {
+	{ "blackwhite", &set_blackwhite },
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
 	{ "rotation", &set_rotation },

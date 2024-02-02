@@ -1,8 +1,25 @@
 #include <mpi_ae.h>
 #include <mpi_isp.h>
 #include <mpi_sys.h>
+#include <mpi_venc.h>
 #include <mpi_vpss.h>
 #include <plugin.h>
+
+static void set_blackwhite(const char *value) {
+	bool index = strlen(value) ? atoi(value) : false;
+
+	VENC_CHN_PARAM_S param;
+	if (HI_MPI_VENC_GetChnParam(0, &param)) {
+		RETURN("HI_MPI_VENC_GetChnParam failed");
+	}
+
+	param.bColor2Grey = index;
+	if (HI_MPI_VENC_SetChnParam(0, &param)) {
+		RETURN("HI_MPI_VENC_SetChnParam failed");
+	}
+
+	RETURN("Set blackwhite: %d", index);
+}
 
 static void set_brightness(const char *value) {
 	ISP_CSC_ATTR_S attr;
@@ -103,6 +120,7 @@ static void get_version() {
 }
 
 static table custom[] = {
+	{ "blackwhite", &set_blackwhite },
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
 	{ "rotation", &set_rotation },
