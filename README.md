@@ -4,7 +4,7 @@
 **_Experimental system for creating open source plugins for Majestic_**
 
 ### Important information:
-- At the moment, examples of plugins have been implemented only for the most popular processors today.
+- At the moment, examples of plugins have been implemented [only][only] for the most [popular][popular] processors today.
 - Nothing prevents everyone and enthusiasts from adding them to other processors and actively developing them.
 - By default, the plugin system is disabled and does not contribute any actions to the main operation of the device.
 
@@ -79,3 +79,5 @@ curl -u root:12345 -s "http://192.168.1.10/plugin?command=brightness&value=100"
 ```
 
 [logo]: https://openipc.org/assets/openipc-logo-black.svg
+[only]: https://github.com/OpenIPC/firmware/blob/1a39728b88f2359a75069082caf7f62367f96f6a/general/package/majestic/majestic.mk#L15
+[popular]: https://openipc.org/supported-hardware/featured
