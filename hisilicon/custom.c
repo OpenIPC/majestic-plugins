@@ -65,7 +65,7 @@ static void set_rotation(const char *value) {
 	int index = strlen(value) ? atoi(value) : -1;
 
 	VPSS_CHN_ATTR_S attr;
-	if (HI_MPI_VPSS_GetChnAttr(0, 1, &attr)) {
+	if (HI_MPI_VPSS_GetChnAttr(0, 0, &attr)) {
 		RETURN("HI_MPI_VPSS_GetChnAttr failed");
 	}
 
@@ -94,7 +94,7 @@ static void set_rotation(const char *value) {
 			RETURN("Unknown rotation: %d", index);
 	}
 
-	if (HI_MPI_VPSS_SetChnAttr(0, 1, &attr)) {
+	if (HI_MPI_VPSS_SetChnAttr(0, 0, &attr)) {
 		RETURN("HI_MPI_VPSS_SetChnAttr failed");
 	}
 
