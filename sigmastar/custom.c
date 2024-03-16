@@ -97,15 +97,6 @@ static void set_rotation(const char *value) {
 	RETURN("Set rotation: %d", index);
 }
 
-static void get_isp_again() {
-	CusAEInfo_t info;
-	if (MI_ISP_CUS3A_GetAeStatus(0, &info)) {
-		RETURN("MI_ISP_CUS3A_GetAeStatus failed");
-	}
-
-	RETURN("%d", info.SensorGain);
-}
-
 static void get_version() {
 	MI_SYS_Version_t version;
 	if (MI_SYS_GetVersion(&version)) {
@@ -120,10 +111,7 @@ static table custom[] = {
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
 	{ "rotation", &set_rotation },
-	{ "isp_again", &get_isp_again },
 	{ "version", &get_version },
-	{ "motion", &call_motion },
-	{ "setup", &call_setup },
 	{ "help", &get_usage },
 };
 

@@ -78,15 +78,6 @@ static void set_rotation(const char *value) {
 	RETURN("Set rotation: %d", index);
 }
 
-static void get_isp_again() {
-	IMPISPEVAttr attr;
-	if (IMP_ISP_Tuning_GetEVAttr(&attr)) {
-		RETURN("IMP_ISP_Tuning_GetEVAttr failed");
-	}
-
-	RETURN("%d", attr.again);
-}
-
 static void get_version() {
 	SUVersion version;
 	if (SU_Base_GetVersion(&version)) {
@@ -101,10 +92,7 @@ static table custom[] = {
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
 	{ "rotation", &set_rotation },
-	{ "isp_again", &get_isp_again },
 	{ "version", &get_version },
-	{ "motion", &call_motion },
-	{ "setup", &call_setup },
 	{ "help", &get_usage },
 };
 

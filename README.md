@@ -15,7 +15,7 @@
 - RETURN is a macro to simplify the plugin response output.
 ```
 static void get_example(const char *value) {
-	RETURN("call to get_example: %s", value);
+	RETURN("plugin get_example: %s", value);
 }
 
 static table custom[] = {
@@ -27,8 +27,8 @@ static table custom[] = {
 ### Example result:
 
 ```
-root@openipc-ssc337de:~# echo example test123 | nc localhost 3500
-call to get_example: test123
+root@openipc-ssc337de:~# echo example test123 | nc localhost 4000
+plugin get_example: test123
 ```
 
 ---
@@ -70,13 +70,15 @@ killall -1 majestic
 
 ### Send local command:
 ```
-echo brightness 100 | nc localhost 3500
+echo brightness 100 | nc localhost 4000
 ```
 
 ### Send remote command:
 ```
-curl -u root:12345 -s "http://192.168.1.10/plugin?command=brightness&value=100"
+echo -e '#!/usr/bin/haserl\nServer: $SERVER_SOFTWARE\nCache-Control: no-store\n\n<% echo $(echo $GET_cmd $GET_val | nc localhost 4000) %>' > /var/www/cgi-bin/plugins.cgi 
+chmod 755 /var/www/cgi-bin/plugins.cgi
 ```
+- http://192.168.1.10/cgi-bin/plugins.cgi?cmd=brightness&val=100
 
 [logo]: https://openipc.org/assets/openipc-logo-black.svg
 [only]: https://github.com/OpenIPC/firmware/blob/1a39728b88f2359a75069082caf7f62367f96f6a/general/package/majestic/majestic.mk#L15

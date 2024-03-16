@@ -101,15 +101,6 @@ static void set_rotation(const char *value) {
 	RETURN("Set rotation: %d", index);
 }
 
-static void get_isp_again() {
-	ISP_EXP_INFO_S info;
-	if (HI_MPI_ISP_QueryExposureInfo(0, &info)) {
-		RETURN("HI_MPI_ISP_QueryExposureInfo failed");
-	}
-
-	RETURN("%d", info.u32AGain);
-}
-
 static void get_version() {
 	MPP_VERSION_S version;
 	if (HI_MPI_SYS_GetVersion(&version)) {
@@ -124,10 +115,7 @@ static table custom[] = {
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
 	{ "rotation", &set_rotation },
-	{ "isp_again", &get_isp_again },
 	{ "version", &get_version },
-	{ "motion", &call_motion },
-	{ "setup", &call_setup },
 	{ "help", &get_usage },
 };
 

@@ -18,7 +18,4 @@ typedef struct {
 } config;
 
 extern config common;
-
-void call_motion(const char* value);
-void call_setup(const char* value);
 void get_usage();
