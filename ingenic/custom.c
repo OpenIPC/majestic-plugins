@@ -1,3 +1,4 @@
+#include <imp_audio.h>
 #include <imp_isp.h>
 #include <su_base.h>
 #include <plugin.h>
@@ -78,6 +79,43 @@ static void set_rotation(const char *value) {
 	RETURN("Set rotation: %d", index);
 }
 
+static void set_fps(const char *value) {
+	uint32_t fps_den = 1; // Initialize fps_den to 1 by default
+	if (strlen(value)) {
+		unsigned char index = atoi(value);
+		if (IMP_ISP_Tuning_SetSensorFPS(index, fps_den)) {
+			RETURN("IMP_ISP_Tuning_SetSensorFPS failed");
+		}
+
+		RETURN("Set fps: %d", index);
+	} else {
+		uint32_t current;
+		if (IMP_ISP_Tuning_GetSensorFPS(&current, &fps_den)) {
+			RETURN("IMP_ISP_Tuning_GetSensorFPS failed");
+		}
+
+		RETURN("Get fps: %d", current);
+	}
+}
+
+static void set_aovol(const char *value) {
+	if (strlen(value)) {
+		unsigned char index = atoi(value);
+		if (IMP_AO_SetVol(0, 0, index)) {
+			RETURN("IMP_AO_SetVol failed");
+		}
+
+		RETURN("Set aovol: %d", index);
+	} else {
+		int current;
+		if (IMP_AO_GetVol(0, 0, &current)) {
+			RETURN("IMP_AO_GetVol failed");
+		}
+
+		RETURN("Get aovol: %d", current);
+	}
+}
+
 static void get_version() {
 	SUVersion version;
 	if (SU_Base_GetVersion(&version)) {
@@ -92,6 +130,8 @@ static table custom[] = {
 	{ "brightness", &set_brightness },
 	{ "contrast", &set_contrast },
 	{ "rotation", &set_rotation },
+	{ "fps", &set_fps },
+	{ "aovol", &set_aovol },
 	{ "version", &get_version },
 	{ "help", &get_usage },
 };
